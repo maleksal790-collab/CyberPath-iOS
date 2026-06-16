@@ -1,4 +1,16 @@
 import Foundation
+import SwiftUI // Ensure SwiftUI is imported
+
+enum ProgressError: Error {
+    case importFailed(String)
+}
+
+@Observable final class ProgressStore { // Use @Observable macro here
+    var progress: Double = 0.0 
+    // ... rest of your code
+}
+
+import Foundation
 import Combine
 
 enum ProgressError: Error {
@@ -6,10 +18,7 @@ enum ProgressError: Error {
 }
 
 final class ProgressStore: ObservableObject {
-    // Ensure these variables are defined
     private let storageKey = "CyberPathProgress"
-    
-    // Add your snapshot property here if it's missing
     @Published var progress: Double = 0.0 
 
     func importJSON(_ json: String) -> Result<String, ProgressError> {
@@ -20,11 +29,9 @@ final class ProgressStore: ObservableObject {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         
-        // Example logic
         return .success("Import successful")
     }
     
-    // Ensure methods like this are properly closed
     func saveProgress(snapshot: [String: Any]) {
         if let data = try? JSONEncoder().encode(String(describing: snapshot)) {
             UserDefaults.standard.set(data, forKey: storageKey)
