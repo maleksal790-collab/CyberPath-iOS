@@ -172,14 +172,13 @@ final class ProgressStore {
 enum ProgressError: Error {
     case importFailed(String)
 }
-    func importJSON(_ json: String) -> Result<String, ProgressError> {
-    // 1. Guard the conversion
+
+func importJSON(_ json: String) -> Result<String, ProgressError> {
     guard let data = json.data(using: .utf8) else {
-        // 2. Wrap your string in the enum case
         return .failure(.importFailed("Import text is not valid UTF-8."))
     }
-    
-    // Example: If successful
+
+    // Your existing logic here...
     return .success("Import successful")
 }
 
