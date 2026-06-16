@@ -1,1 +1,73 @@
+name: iOS Governed Delivery
 
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Structure And Policy Validation
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x ./scripts/ci/validate_structure.sh
+
+      - name: Validate repository structure
+        run: ./scripts/ci/validate_structure.sh
+
+      - name: List Xcode project
+        run: xcodebuild -list -project CyberPath.xcodeproj
+
+  build:
+    name: Build
+    runs-on: macos-14
+    needs: validate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build app
+        run: |
+          xcodebuild \
+            -project CyberPath.xcodeproj \
+            -scheme CyberPath \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -resultBundlePath build/CyberPath-Build.xcresult \
+            build
+
+      - name: Upload build result bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CyberPath-Build-xcresult
+          path: build/CyberPath-Build.xcresult
+
+  release-readiness:
+    name: Release Readiness Gate
+    runs-on: macos-14
+    needs: build
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make release script executable
+        run: chmod +x ./scripts/release/package_release.sh
+
+      - name: Verify governed release inputs
+        run: ./scripts/release/package_release.sh
+
+      - name: Upload release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: CyberPath-iOS-release-source
+          path: release/CyberPath-iOS-source.zip
