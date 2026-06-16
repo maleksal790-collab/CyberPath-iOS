@@ -169,6 +169,7 @@ final class ProgressStore {
         guard let data = try? encoder.encode(export) else { return "{}" }
         return String(data: data, encoding: .utf8) ?? "{}"
     }
+    
 enum ProgressError: Error {
     case importFailed(String)
 }
