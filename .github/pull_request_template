@@ -1,0 +1,34 @@
+# CyberPath iOS Change Request
+
+## Summary
+
+- 
+
+## Change Type
+
+- [ ] Feature
+- [ ] Fix
+- [ ] Content update
+- [ ] Refactor
+- [ ] Release/governance
+- [ ] Security/privacy
+
+## Required Evidence
+
+- [ ] Structure validation passes: `make validate`
+- [ ] Xcode build passes on macOS
+- [ ] Simulator smoke test completed
+- [ ] Accessibility impact reviewed
+- [ ] Privacy impact reviewed
+- [ ] User-facing copy reviewed
+- [ ] Release notes updated when required
+
+## Risk
+
+- Risk level: Low / Medium / High
+- Rollback plan:
+
+## Screenshots Or Notes
+
+Add screenshots, simulator notes, or acceptance evidence for UI changes.
+
