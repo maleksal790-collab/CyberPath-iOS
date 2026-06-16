@@ -169,11 +169,19 @@ final class ProgressStore {
         guard let data = try? encoder.encode(export) else { return "{}" }
         return String(data: data, encoding: .utf8) ?? "{}"
     }
-
-    func importJSON(_ json: String) -> Result<String, String> {
-        guard let data = json.data(using: .utf8) else {
-            return .failure("Import text is not valid UTF-8.")
-        }
+enum ProgressError: Error {
+    case importFailed(String)
+}
+    func importJSON(_ json: String) -> Result<String, ProgressError> {
+    // 1. Guard the conversion
+    guard let data = json.data(using: .utf8) else {
+        // 2. Wrap your string in the enum case
+        return .failure(.importFailed("Import text is not valid UTF-8."))
+    }
+    
+    // Example: If successful
+    return .success("Import successful")
+}
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
