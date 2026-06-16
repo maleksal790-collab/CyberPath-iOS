@@ -1,0 +1,7 @@
+# CyberPath iOS ownership
+* @cyberpath/mobile-maintainers
+
+/CyberPath/ @cyberpath/mobile-maintainers
+/CyberPath.xcodeproj/ @cyberpath/mobile-maintainers
+/docs/governance/ @cyberpath/release-governance
+/.github/workflows/ @cyberpath/release-governance
