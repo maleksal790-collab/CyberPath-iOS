@@ -107,9 +107,9 @@ struct GlossaryTerm: Identifiable, Hashable {
 }
 
 struct PortCheatSheetItem: Identifiable, Hashable {
-    var id: String { "\(port)-\(protocol)" }
+    var id: String { "\(port)-\(transportProtocol)" }
     let port: Int
-    let protocol: String
+    let transportProtocol: String
     let usesTCP: Bool
     let description: String
 }
