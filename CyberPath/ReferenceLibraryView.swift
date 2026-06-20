@@ -53,8 +53,42 @@ struct ReferenceLibraryView: View {
         !glossaryTerms.isEmpty || !portItems.isEmpty || !frameworks.isEmpty || !metrics.isEmpty || !toolCategories.isEmpty
     }
 
+    private var visibleReferenceCount: Int {
+        glossaryTerms.count + portItems.count + frameworks.count + metrics.count + toolCategories.count
+    }
+
+    private var totalReferenceCount: Int {
+        GlossaryData.terms.count
+        + PortReferenceData.items.count
+        + FrameworkReferenceData.frameworks.count
+        + MetricReferenceData.metrics.count
+        + ToolReferenceData.categories.count
+    }
+
+    private var filterSummary: String {
+        switch (selectedCategory, trimmedQuery.isEmpty) {
+        case (.all, true):
+            return "Showing all reference categories."
+        case (.all, false):
+            return "Searching all categories for \"\(trimmedQuery)\"."
+        case (_, true):
+            return "Showing \(selectedCategory.rawValue.lowercased()) entries."
+        case (_, false):
+            return "Searching \(selectedCategory.rawValue.lowercased()) for \"\(trimmedQuery)\"."
+        }
+    }
+
     var body: some View {
         List {
+            Section {
+                ReferenceOverviewHeader(
+                    visibleCount: visibleReferenceCount,
+                    totalCount: totalReferenceCount,
+                    categoryLabel: selectedCategory.rawValue,
+                    filterSummary: filterSummary
+                )
+            }
+
             Section {
                 Picker("Category", selection: $selectedCategory) {
                     ForEach(ReferenceCategory.allCases) { category in
@@ -202,6 +236,53 @@ struct ReferenceLibraryView: View {
     private func matchesQuery(_ values: [String]) -> Bool {
         guard !trimmedQuery.isEmpty else { return true }
         return values.joined(separator: " ").localizedCaseInsensitiveContains(trimmedQuery)
+    }
+}
+
+private struct ReferenceOverviewHeader: View {
+    let visibleCount: Int
+    let totalCount: Int
+    let categoryLabel: String
+    let filterSummary: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Label("Reference library", systemImage: "list.bullet.rectangle.portrait")
+                .font(.headline)
+                .foregroundStyle(.cyan)
+
+            Text(filterSummary)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+            LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 10) {
+                ReferenceOverviewTile(value: "\(visibleCount)", label: "Visible")
+                ReferenceOverviewTile(value: "\(totalCount)", label: "Total")
+                ReferenceOverviewTile(value: categoryLabel, label: "Category")
+                ReferenceOverviewTile(value: "5", label: "Groups")
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+private struct ReferenceOverviewTile: View {
+    let value: String
+    let label: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(value)
+                .font(.headline.weight(.bold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(10)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }
 
