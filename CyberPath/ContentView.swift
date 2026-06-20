@@ -206,10 +206,29 @@ struct TopicDetailView: View {
     @Environment(ProgressStore.self) private var progress
     let domain: Domain
     let topic: Topic
-    @State private var selectedAnswer: Int?
-    @State private var showExplanation = false
+    @State private var selectedQuizIndex = 0
+    @State private var selectedAnswers: [Int: Int] = [:]
     @State private var noteDraft = ""
     @State private var sessionNotice: String?
+
+    private var currentQuiz: QuizQuestion {
+        topic.quizzes[selectedQuizIndex]
+    }
+
+    private var currentSelectedAnswer: Int? {
+        selectedAnswers[selectedQuizIndex]
+    }
+
+    private var answeredQuizCount: Int {
+        selectedAnswers.keys.filter { topic.quizzes.indices.contains($0) }.count
+    }
+
+    private var correctQuizCount: Int {
+        selectedAnswers.reduce(0) { total, answer in
+            guard topic.quizzes.indices.contains(answer.key) else { return total }
+            return total + (topic.quizzes[answer.key].correctIndex == answer.value ? 1 : 0)
+        }
+    }
 
     var body: some View {
         List {
@@ -257,26 +276,39 @@ struct TopicDetailView: View {
             }
 
             Section("Quiz") {
-                Text(topic.quiz.question)
+                if topic.quizzes.count > 1 {
+                    Picker("Question", selection: $selectedQuizIndex) {
+                        ForEach(topic.quizzes.indices, id: \.self) { index in
+                            Text("Question \(index + 1)").tag(index)
+                        }
+                    }
+                    .pickerStyle(.menu)
+
+                    Text("\(answeredQuizCount) of \(topic.quizzes.count) answered · \(correctQuizCount) correct")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Text(currentQuiz.question)
                     .font(.headline)
-                ForEach(topic.quiz.answers.indices, id: \.self) { index in
+                ForEach(currentQuiz.answers.indices, id: \.self) { index in
                     Button {
-                        selectedAnswer = index
-                        showExplanation = true
-                        progress.saveQuizScore(index == topic.quiz.correctIndex ? 100 : 0, for: topic)
+                        let updatedAnswers = selectedAnswers.merging([selectedQuizIndex: index]) { _, new in new }
+                        selectedAnswers = updatedAnswers
+                        progress.saveQuizScore(scorePercent(from: updatedAnswers), for: topic)
                     } label: {
                         HStack {
-                            Text(topic.quiz.answers[index])
+                            Text(currentQuiz.answers[index])
                             Spacer()
-                            if selectedAnswer == index {
-                                Image(systemName: index == topic.quiz.correctIndex ? "checkmark.circle.fill" : "xmark.circle.fill")
-                                    .foregroundStyle(index == topic.quiz.correctIndex ? .green : .red)
+                            if currentSelectedAnswer == index {
+                                Image(systemName: index == currentQuiz.correctIndex ? "checkmark.circle.fill" : "xmark.circle.fill")
+                                    .foregroundStyle(index == currentQuiz.correctIndex ? .green : .red)
                             }
                         }
                     }
                 }
-                if showExplanation {
-                    Text(topic.quiz.explanation)
+                if currentSelectedAnswer != nil {
+                    Text(currentQuiz.explanation)
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
@@ -295,6 +327,15 @@ struct TopicDetailView: View {
             progress.markVisited(topic)
             noteDraft = progress.note(for: topic)
         }
+    }
+
+    private func scorePercent(from answers: [Int: Int]) -> Int {
+        guard !topic.quizzes.isEmpty else { return 0 }
+        let correctAnswers = answers.reduce(0) { total, answer in
+            guard topic.quizzes.indices.contains(answer.key) else { return total }
+            return total + (topic.quizzes[answer.key].correctIndex == answer.value ? 1 : 0)
+        }
+        return Int(Double(correctAnswers) / Double(topic.quizzes.count) * 100)
     }
 }
 
