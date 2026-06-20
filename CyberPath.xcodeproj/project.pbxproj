@@ -13,6 +13,13 @@
 		AA0000000000000000000004 /* CyberPathData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000014 /* CyberPathData.swift */; };
 		AA0000000000000000000005 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000015 /* ProgressStore.swift */; };
 		AA0000000000000000000006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000016 /* Assets.xcassets */; };
+		AA0000000000000000000007 /* GlossaryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000017 /* GlossaryData.swift */; };
+		AA0000000000000000000008 /* PortReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000018 /* PortReferenceData.swift */; };
+		AA0000000000000000000009 /* FrameworkReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000019 /* FrameworkReferenceData.swift */; };
+		AA000000000000000000000A /* MetricReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001A /* MetricReferenceData.swift */; };
+		AA000000000000000000000B /* ToolReferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001B /* ToolReferenceData.swift */; };
+		AA000000000000000000000C /* ReferenceLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001C /* ReferenceLibraryView.swift */; };
+		AA000000000000000000000D /* RootContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000000000000000000001D /* RootContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +30,13 @@
 		AA0000000000000000000014 /* CyberPathData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyberPathData.swift; sourceTree = "<group>"; };
 		AA0000000000000000000015 /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		AA0000000000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AA0000000000000000000017 /* GlossaryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlossaryData.swift; sourceTree = "<group>"; };
+		AA0000000000000000000018 /* PortReferenceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortReferenceData.swift; sourceTree = "<group>"; };
+		AA0000000000000000000019 /* FrameworkReferenceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkReferenceData.swift; sourceTree = "<group>"; };
+		AA000000000000000000001A /* MetricReferenceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricReferenceData.swift; sourceTree = "<group>"; };
+		AA000000000000000000001B /* ToolReferenceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolReferenceData.swift; sourceTree = "<group>"; };
+		AA000000000000000000001C /* ReferenceLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceLibraryView.swift; sourceTree = "<group>"; };
+		AA000000000000000000001D /* RootContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,9 +62,16 @@
 			isa = PBXGroup;
 			children = (
 				AA0000000000000000000011 /* CyberPathApp.swift */,
+				AA000000000000000000001D /* RootContentView.swift */,
 				AA0000000000000000000012 /* ContentView.swift */,
+				AA000000000000000000001C /* ReferenceLibraryView.swift */,
 				AA0000000000000000000013 /* Models.swift */,
 				AA0000000000000000000014 /* CyberPathData.swift */,
+				AA0000000000000000000017 /* GlossaryData.swift */,
+				AA0000000000000000000018 /* PortReferenceData.swift */,
+				AA0000000000000000000019 /* FrameworkReferenceData.swift */,
+				AA000000000000000000001A /* MetricReferenceData.swift */,
+				AA000000000000000000001B /* ToolReferenceData.swift */,
 				AA0000000000000000000015 /* ProgressStore.swift */,
 				AA0000000000000000000016 /* Assets.xcassets */,
 			);
@@ -135,9 +156,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0000000000000000000001 /* CyberPathApp.swift in Sources */,
+				AA000000000000000000000D /* RootContentView.swift in Sources */,
 				AA0000000000000000000002 /* ContentView.swift in Sources */,
+				AA000000000000000000000C /* ReferenceLibraryView.swift in Sources */,
 				AA0000000000000000000003 /* Models.swift in Sources */,
 				AA0000000000000000000004 /* CyberPathData.swift in Sources */,
+				AA0000000000000000000007 /* GlossaryData.swift in Sources */,
+				AA0000000000000000000008 /* PortReferenceData.swift in Sources */,
+				AA0000000000000000000009 /* FrameworkReferenceData.swift in Sources */,
+				AA000000000000000000000A /* MetricReferenceData.swift in Sources */,
+				AA000000000000000000000B /* ToolReferenceData.swift in Sources */,
 				AA0000000000000000000005 /* ProgressStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
