@@ -108,6 +108,10 @@ struct ReferenceLibraryView: View {
             }
 
             Section {
+                ReferenceGuidanceCard()
+            }
+
+            Section {
                 Picker("Category", selection: $selectedCategory) {
                     ForEach(ReferenceCategory.allCases) { category in
                         Text(category.rawValue).tag(category)
@@ -303,6 +307,35 @@ private struct ReferenceOverviewHeader: View {
             }
         }
         .padding(.vertical, 4)
+    }
+}
+
+private struct ReferenceGuidanceCard: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("How to use this library", systemImage: "lightbulb")
+                .font(.headline)
+                .foregroundStyle(.cyan)
+
+            VStack(alignment: .leading, spacing: 8) {
+                ReferenceGuidanceRow(symbol: "magnifyingglass", text: "Search across visible reference content.")
+                ReferenceGuidanceRow(symbol: "line.3.horizontal.decrease.circle", text: "Filter by category when you know the type of item you need.")
+                ReferenceGuidanceRow(symbol: "arrow.up.arrow.down", text: "Switch sort mode when scanning a long list.")
+                ReferenceGuidanceRow(symbol: "chevron.right.circle", text: "Expand rows to inspect details without leaving the screen.")
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+private struct ReferenceGuidanceRow: View {
+    let symbol: String
+    let text: String
+
+    var body: some View {
+        Label(text, systemImage: symbol)
+            .font(.caption)
+            .foregroundStyle(.secondary)
     }
 }
 
