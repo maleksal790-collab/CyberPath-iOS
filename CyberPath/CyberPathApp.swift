@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct CyberPathApp: App {
-    @State private var progressStore = ProgressStore() // Initialize here
+    @State private var progressStore = ProgressStore()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(progressStore) // Inject here
+            RootContentView()
+                .environment(progressStore)
         }
     }
 }
