@@ -95,6 +95,19 @@ struct ReferenceLibraryView: View {
         !trimmedQuery.isEmpty || selectedCategory != .all || sortMode != .defaultOrder
     }
 
+    private var emptyStateDescription: String {
+        switch (selectedCategory, trimmedQuery.isEmpty) {
+        case (.all, true):
+            return "No reference entries are available yet."
+        case (.all, false):
+            return "No entries matched \"\(trimmedQuery)\". Try a broader search term."
+        case (_, true):
+            return "No \(selectedCategory.rawValue.lowercased()) entries are available yet. Try another category."
+        case (_, false):
+            return "No \(selectedCategory.rawValue.lowercased()) entries matched \"\(trimmedQuery)\". Try clearing the search or changing category."
+        }
+    }
+
     var body: some View {
         List {
             Section {
@@ -136,7 +149,7 @@ struct ReferenceLibraryView: View {
                     ContentUnavailableView(
                         "No reference entries found",
                         systemImage: "magnifyingglass",
-                        description: Text("Try a different search term or category.")
+                        description: Text(emptyStateDescription)
                     )
                 }
             }
