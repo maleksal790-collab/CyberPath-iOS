@@ -32,7 +32,7 @@ struct QuizQuestion: Hashable {
     let explanation: String
 }
 
-struct Scenario: Identifiable {
+struct Scenario: Identifiable, Hashable {
     let id: String
     let title: String
     let summary: String
