@@ -4,6 +4,7 @@ struct ReferenceLibraryView: View {
     @State private var query = ""
     @State private var selectedCategory = ReferenceCategory.all
     @State private var sortMode = ReferenceSortMode.defaultOrder
+    @State private var favoritedReferenceIDs: Set<String> = []
 
     private enum ReferenceCategory: String, CaseIterable, Identifiable {
         case all = "All"
@@ -78,6 +79,11 @@ struct ReferenceLibraryView: View {
         + ToolReferenceData.categories.count
     }
 
+    private var favoriteSummary: String {
+        let label = favoritedReferenceIDs.count == 1 ? "favorite" : "favorites"
+        return "\(favoritedReferenceIDs.count) \(label) marked in this session."
+    }
+
     private var filterSummary: String {
         switch (selectedCategory, trimmedQuery.isEmpty) {
         case (.all, true):
@@ -124,6 +130,7 @@ struct ReferenceLibraryView: View {
                 ReferenceOverviewHeader(
                     visibleCount: visibleReferenceCount,
                     totalCount: totalReferenceCount,
+                    favoriteCount: favoritedReferenceIDs.count,
                     categoryLabel: selectedCategory.rawValue,
                     sortLabel: sortMode.rawValue,
                     filterSummary: filterSummary
@@ -131,7 +138,7 @@ struct ReferenceLibraryView: View {
             }
 
             Section {
-                ReferenceGuidanceCard()
+                ReferenceGuidanceCard(favoriteSummary: favoriteSummary)
             }
 
             Section {
@@ -176,14 +183,23 @@ struct ReferenceLibraryView: View {
             if !glossaryTerms.isEmpty {
                 Section("Glossary (\(glossaryTerms.count))") {
                     ForEach(glossaryTerms) { term in
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(term.term)
-                                .font(.headline)
-                            Text(term.definition)
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                            if !term.relatedDomainIds.isEmpty {
-                                FlowTags(values: term.relatedDomainIds)
+                        HStack(alignment: .top, spacing: 12) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(term.term)
+                                    .font(.headline)
+                                Text(term.definition)
+                                    .font(.callout)
+                                    .foregroundStyle(.secondary)
+                                if !term.relatedDomainIds.isEmpty {
+                                    FlowTags(values: term.relatedDomainIds)
+                                }
+                            }
+                            Spacer()
+                            FavoriteReferenceButton(
+                                isFavorite: isFavorite(referenceID: favoriteID("glossary", term.id)),
+                                label: term.term
+                            ) {
+                                toggleFavorite(referenceID: favoriteID("glossary", term.id))
                             }
                         }
                         .padding(.vertical, 4)
@@ -213,6 +229,12 @@ struct ReferenceLibraryView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
                                     .background(.quaternary, in: Capsule())
+                                FavoriteReferenceButton(
+                                    isFavorite: isFavorite(referenceID: favoriteID("port", "\(item.port)-\(item.transportProtocol)")),
+                                    label: "Port \(item.port)"
+                                ) {
+                                    toggleFavorite(referenceID: favoriteID("port", "\(item.port)-\(item.transportProtocol)"))
+                                }
                             }
                         }
                     }
@@ -228,15 +250,24 @@ struct ReferenceLibraryView: View {
                             ReferenceMetaRow(label: "Structure", value: framework.structure)
                             ReferenceMetaRow(label: "Best for", value: framework.bestFor)
                         } label: {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(framework.framework)
-                                    .font(.headline)
-                                Text(framework.scope)
-                                Text(framework.bestFor)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                            HStack(alignment: .top, spacing: 12) {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text(framework.framework)
+                                        .font(.headline)
+                                    Text(framework.scope)
+                                    Text(framework.bestFor)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding(.vertical, 4)
+                                Spacer()
+                                FavoriteReferenceButton(
+                                    isFavorite: isFavorite(referenceID: favoriteID("framework", framework.id)),
+                                    label: framework.framework
+                                ) {
+                                    toggleFavorite(referenceID: favoriteID("framework", framework.id))
+                                }
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 }
@@ -251,21 +282,30 @@ struct ReferenceLibraryView: View {
                             ReferenceMetaRow(label: "Target", value: metric.target)
                             ReferenceMetaRow(label: "Description", value: metric.description)
                         } label: {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(metric.metric)
-                                    .font(.headline)
-                                Text(metric.fullName)
-                                    .font(.subheadline)
-                                Text(metric.description)
-                                    .font(.callout)
-                                    .foregroundStyle(.secondary)
-                                Text(metric.category)
-                                    .font(.caption.weight(.bold))
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(.quaternary, in: Capsule())
+                            HStack(alignment: .top, spacing: 12) {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text(metric.metric)
+                                        .font(.headline)
+                                    Text(metric.fullName)
+                                        .font(.subheadline)
+                                    Text(metric.description)
+                                        .font(.callout)
+                                        .foregroundStyle(.secondary)
+                                    Text(metric.category)
+                                        .font(.caption.weight(.bold))
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(.quaternary, in: Capsule())
+                                }
+                                .padding(.vertical, 4)
+                                Spacer()
+                                FavoriteReferenceButton(
+                                    isFavorite: isFavorite(referenceID: favoriteID("metric", metric.id)),
+                                    label: metric.metric
+                                ) {
+                                    toggleFavorite(referenceID: favoriteID("metric", metric.id))
+                                }
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 }
@@ -279,12 +319,21 @@ struct ReferenceLibraryView: View {
                                 Label(tool, systemImage: "checkmark.circle")
                             }
                         } label: {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(category.category)
-                                    .font(.headline)
-                                FlowTags(values: category.tools)
+                            HStack(alignment: .top, spacing: 12) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(category.category)
+                                        .font(.headline)
+                                    FlowTags(values: category.tools)
+                                }
+                                .padding(.vertical, 4)
+                                Spacer()
+                                FavoriteReferenceButton(
+                                    isFavorite: isFavorite(referenceID: favoriteID("tool", category.id)),
+                                    label: category.category
+                                ) {
+                                    toggleFavorite(referenceID: favoriteID("tool", category.id))
+                                }
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 }
@@ -318,11 +367,28 @@ struct ReferenceLibraryView: View {
         guard !trimmedQuery.isEmpty else { return true }
         return values.joined(separator: " ").localizedCaseInsensitiveContains(trimmedQuery)
     }
+
+    private func favoriteID(_ prefix: String, _ value: String) -> String {
+        "\(prefix):\(value)"
+    }
+
+    private func isFavorite(referenceID: String) -> Bool {
+        favoritedReferenceIDs.contains(referenceID)
+    }
+
+    private func toggleFavorite(referenceID: String) {
+        if favoritedReferenceIDs.contains(referenceID) {
+            favoritedReferenceIDs.remove(referenceID)
+        } else {
+            favoritedReferenceIDs.insert(referenceID)
+        }
+    }
 }
 
 private struct ReferenceOverviewHeader: View {
     let visibleCount: Int
     let totalCount: Int
+    let favoriteCount: Int
     let categoryLabel: String
     let sortLabel: String
     let filterSummary: String
@@ -340,6 +406,7 @@ private struct ReferenceOverviewHeader: View {
             LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 10) {
                 ReferenceOverviewTile(value: "\(visibleCount)", label: "Visible")
                 ReferenceOverviewTile(value: "\(totalCount)", label: "Total")
+                ReferenceOverviewTile(value: "\(favoriteCount)", label: "Favorites")
                 ReferenceOverviewTile(value: categoryLabel, label: "Category")
                 ReferenceOverviewTile(value: sortLabel, label: "Sort")
             }
@@ -349,6 +416,8 @@ private struct ReferenceOverviewHeader: View {
 }
 
 private struct ReferenceGuidanceCard: View {
+    let favoriteSummary: String
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Label("How to use this library", systemImage: "lightbulb")
@@ -359,8 +428,14 @@ private struct ReferenceGuidanceCard: View {
                 ReferenceGuidanceRow(symbol: "magnifyingglass", text: "Search across visible reference content.")
                 ReferenceGuidanceRow(symbol: "line.3.horizontal.decrease.circle", text: "Filter by category when you know the type of item you need.")
                 ReferenceGuidanceRow(symbol: "arrow.up.arrow.down", text: "Switch sort mode when scanning a long list.")
+                ReferenceGuidanceRow(symbol: "star", text: "Mark useful entries as favorites during the current session.")
                 ReferenceGuidanceRow(symbol: "chevron.right.circle", text: "Expand rows to inspect details without leaving the screen.")
             }
+
+            Text(favoriteSummary)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .accessibilityLabel(favoriteSummary)
 
             Text("Reference entries are curated for quick lookup and will keep expanding as the app content grows.")
                 .font(.caption2)
@@ -379,6 +454,24 @@ private struct ReferenceGuidanceRow: View {
         Label(text, systemImage: symbol)
             .font(.caption)
             .foregroundStyle(.secondary)
+    }
+}
+
+private struct FavoriteReferenceButton: View {
+    let isFavorite: Bool
+    let label: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: isFavorite ? "star.fill" : "star")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(isFavorite ? .yellow : .secondary)
+                .padding(6)
+                .background(.quaternary, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isFavorite ? "Remove \(label) from favorites" : "Add \(label) to favorites")
     }
 }
 
