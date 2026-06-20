@@ -91,6 +91,16 @@ struct ReferenceLibraryView: View {
         }
     }
 
+    private var resultSummary: String {
+        let entryLabel = visibleReferenceCount == 1 ? "entry" : "entries"
+
+        if hasActiveFilters {
+            return "\(visibleReferenceCount) \(entryLabel) match the current reference controls."
+        }
+
+        return "\(visibleReferenceCount) \(entryLabel) available across the full reference library."
+    }
+
     private var hasActiveFilters: Bool {
         !trimmedQuery.isEmpty || selectedCategory != .all || sortMode != .defaultOrder
     }
@@ -142,6 +152,15 @@ struct ReferenceLibraryView: View {
                 .pickerStyle(.segmented)
                 .accessibilityLabel("Reference sort mode")
                 .accessibilityValue(sortMode.rawValue)
+            }
+
+            if hasResults {
+                Section {
+                    Label(resultSummary, systemImage: "checklist")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .accessibilityLabel(resultSummary)
+                }
             }
 
             if !hasResults {
