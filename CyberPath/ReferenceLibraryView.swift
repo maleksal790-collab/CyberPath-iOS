@@ -130,7 +130,7 @@ struct ReferenceLibraryView: View {
             }
 
             if !glossaryTerms.isEmpty {
-                Section("Glossary") {
+                Section("Glossary (\(glossaryTerms.count))") {
                     ForEach(glossaryTerms) { term in
                         VStack(alignment: .leading, spacing: 6) {
                             Text(term.term)
@@ -148,7 +148,7 @@ struct ReferenceLibraryView: View {
             }
 
             if !portItems.isEmpty {
-                Section("Ports") {
+                Section("Ports (\(portItems.count))") {
                     ForEach(portItems) { item in
                         DisclosureGroup {
                             ReferenceMetaRow(label: "Transport", value: item.transportProtocol)
@@ -176,7 +176,7 @@ struct ReferenceLibraryView: View {
             }
 
             if !frameworks.isEmpty {
-                Section("Frameworks") {
+                Section("Frameworks (\(frameworks.count))") {
                     ForEach(frameworks) { framework in
                         DisclosureGroup {
                             ReferenceMetaRow(label: "Scope", value: framework.scope)
@@ -199,7 +199,7 @@ struct ReferenceLibraryView: View {
             }
 
             if !metrics.isEmpty {
-                Section("Metrics") {
+                Section("Metrics (\(metrics.count))") {
                     ForEach(metrics) { metric in
                         DisclosureGroup {
                             ReferenceMetaRow(label: "Full name", value: metric.fullName)
@@ -228,7 +228,7 @@ struct ReferenceLibraryView: View {
             }
 
             if !toolCategories.isEmpty {
-                Section("Tools") {
+                Section("Tools (\(toolCategories.count))") {
                     ForEach(toolCategories) { category in
                         DisclosureGroup {
                             ForEach(category.tools, id: \.self) { tool in
