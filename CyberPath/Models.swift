@@ -247,7 +247,7 @@ struct ProgressSnapshot: Codable {
         completedTopicIds = try container.decodeIfPresent(Set<String>.self, forKey: .completedTopicIds) ?? []
         bookmarkedTopicIds = try container.decodeIfPresent(Set<String>.self, forKey: .bookmarkedTopicIds) ?? []
         quizScores = try container.decodeIfPresent([String: Int].self, forKey: .quizScores) ?? [:]
-        notes = try container.decodeIfPresent([String: String].self, forKey: .notes) ?? []
+        notes = try container.decodeIfPresent([String: String].self, forKey: .notes) ?? [:]
         diagnosticScores = try container.decodeIfPresent([String: Int].self, forKey: .diagnosticScores) ?? [:]
         scenarioAttempts = try container.decodeIfPresent([ScenarioAttempt].self, forKey: .scenarioAttempts) ?? []
         lastVisitedTopicId = try container.decodeIfPresent(String.self, forKey: .lastVisitedTopicId)
