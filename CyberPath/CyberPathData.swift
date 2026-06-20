@@ -138,30 +138,56 @@ enum CyberPathData {
                     title: "OSI & TCP/IP Models",
                     minutes: 15,
                     difficulty: 1,
-                    overview: "Use layered models to describe how traffic moves and where failures or attacks occur.",
-                    workplaceUse: "Clarifies ownership during outages, firewall changes, application issues, and network architecture reviews.",
-                    keyTerms: ["Layer 3", "Layer 4", "Layer 7", "TCP/IP"],
-                    quiz: QuizQuestion(
-                        question: "Which OSI layer is commonly associated with routing?",
-                        answers: ["Layer 1", "Layer 2", "Layer 3", "Layer 7"],
-                        correctIndex: 2,
-                        explanation: "Layer 3 handles network addressing and routing."
-                    )
+                    overview: "The OSI model is a 7-layer conceptual framework for understanding how data moves across networks. The TCP/IP model is the practical 4-layer implementation used on the internet. Together, they provide the vocabulary for network communication.",
+                    workplaceUse: "When your network team says the issue is at Layer 3, they usually mean routing or IP addressing. When they say Layer 7 attack, it targets the application itself. Understanding layers helps you route ownership and assess severity quickly.",
+                    deepDive: [
+                        "Layer 7 - Application: HTTP, HTTPS, DNS, FTP, SMTP, and SSH. Users and applications interact here, and attacks include SQL injection, XSS, and phishing.",
+                        "Layer 4 - Transport: TCP is reliable and ordered, while UDP is fast and connectionless. Ports identify services, and SYN floods target this layer.",
+                        "Layer 3 - Network: IP addressing and routing between networks. Routers operate here, and risks include IP spoofing and routing attacks.",
+                        "Layer 2 - Data Link: MAC addresses, switches, frames, ARP spoofing, and VLAN hopping.",
+                        "TCP/IP maps OSI layers into Application, Transport, Internet, and Network Access layers for practical implementation."
+                    ],
+                    keyTerms: ["OSI", "TCP/IP", "Layer", "Encapsulation", "Protocol", "PDU", "Frame", "Packet", "Segment"],
+                    relatedTopicIds: ["ip-addressing", "protocols-ports", "network-attacks"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "At which OSI layer do routers primarily operate?",
+                            answers: ["Layer 2 - Data Link", "Layer 3 - Network", "Layer 4 - Transport", "Layer 7 - Application"],
+                            correctIndex: 1,
+                            explanation: "Routers operate at Layer 3, making forwarding decisions based on IP addresses."
+                        ),
+                        QuizQuestion(
+                            question: "A DDoS SYN flood attack targets which OSI layer?",
+                            answers: ["Layer 3", "Layer 4", "Layer 5", "Layer 7"],
+                            correctIndex: 1,
+                            explanation: "SYN floods exploit the TCP three-way handshake at Layer 4 and overwhelm connection handling."
+                        )
+                    ]
                 ),
                 Topic(
                     id: "firewalls-vpns",
                     title: "Firewalls & VPNs",
                     minutes: 14,
                     difficulty: 2,
-                    overview: "Control traffic between zones and provide secure remote access through approved encrypted paths.",
-                    workplaceUse: "Supports change approvals, segmentation projects, secure access rollouts, and rollback planning.",
-                    keyTerms: ["ACL", "VPN", "Segmentation", "Ingress", "Egress"],
-                    quiz: QuizQuestion(
-                        question: "What is the main purpose of a firewall rule?",
-                        answers: ["Store data", "Control traffic", "Compile code", "Assign IPs"],
-                        correctIndex: 1,
-                        explanation: "Firewall rules permit or deny traffic according to policy."
-                    )
+                    overview: "Firewalls control traffic flow between networks based on rules. VPNs create encrypted tunnels over public networks. Together they form core perimeter, segmentation, and secure remote-access controls.",
+                    workplaceUse: "Firewall change requests are common in security projects and need review, approval, and testing. VPN projects require capacity planning, user onboarding, split-tunnel decisions, and careful rollback planning.",
+                    deepDive: [
+                        "Stateless firewalls filter packets individually by source, destination, port, and protocol. They are fast but have limited context.",
+                        "Stateful firewalls track connection state and understand that response packets belong to an established connection.",
+                        "Next-generation firewalls add application awareness, intrusion prevention, deep packet inspection, and sometimes SSL inspection.",
+                        "Web application firewalls protect web applications from Layer 7 and OWASP Top 10 style attacks.",
+                        "VPN types include site-to-site, remote access, SSL VPN, IPSec, OpenVPN, and WireGuard-style modern tunnels."
+                    ],
+                    keyTerms: ["Firewall", "VPN", "ACL", "Rule", "Stateful", "NGFW", "WAF", "IPSec", "DMZ", "Split Tunnel"],
+                    relatedTopicIds: ["protocols-ports", "network-security-arch", "zero-trust"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "What advantage does a Next-Generation Firewall have over a traditional stateful firewall?",
+                            answers: ["It is cheaper", "Application-layer awareness and deep packet inspection", "It does not need rules", "It only works with VPNs"],
+                            correctIndex: 1,
+                            explanation: "NGFWs can identify and control applications, inspect traffic deeply, and integrate additional prevention capabilities."
+                        )
+                    ]
                 )
             ],
             capstone: "Design a secure branch-office network with trust boundaries and approved traffic flows."
