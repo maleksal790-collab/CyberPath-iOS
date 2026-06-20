@@ -71,6 +71,56 @@ enum CyberPathData {
                             explanation: "Kali Linux comes pre-loaded with many security and penetration testing tools."
                         )
                     ]
+                ),
+                Topic(
+                    id: "virtualization",
+                    title: "Virtualization & Containers",
+                    minutes: 10,
+                    difficulty: 2,
+                    overview: "Virtualization allows multiple operating systems to run on a single physical machine using hypervisors. Containers provide lightweight, isolated environments for applications. Both are foundational to modern infrastructure and cloud computing.",
+                    workplaceUse: "Virtualization projects involve capacity planning, licensing costs, and migration timelines. Container projects move faster but require different security considerations. Understanding this helps you scope infrastructure and cloud delivery work accurately.",
+                    deepDive: [
+                        "Type 1 hypervisors run directly on hardware and are common in data centers, including platforms such as VMware ESXi and Microsoft Hyper-V.",
+                        "Type 2 hypervisors run on top of a host operating system and are common for development and testing.",
+                        "Containers package applications with dependencies and are lighter than virtual machines because they share the host kernel.",
+                        "Security implications include VM escape, container breakout, hypervisor vulnerabilities, snapshot governance, and network isolation.",
+                        "Use cases include server consolidation, disaster recovery, development environments, malware sandboxing, and cloud infrastructure."
+                    ],
+                    keyTerms: ["Hypervisor", "VM", "Container", "Docker", "Kubernetes", "Snapshot", "vMotion", "Orchestration"],
+                    relatedTopicIds: ["cloud-models", "server-hardening", "operating-systems"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "What is the key difference between a Type 1 and Type 2 hypervisor?",
+                            answers: ["Type 1 is free, Type 2 is paid", "Type 1 runs on bare metal, Type 2 runs on a host OS", "Type 1 is for containers, Type 2 is for VMs", "There is no difference"],
+                            correctIndex: 1,
+                            explanation: "Type 1 hypervisors run directly on hardware, while Type 2 hypervisors run as software on an existing operating system."
+                        )
+                    ]
+                ),
+                Topic(
+                    id: "troubleshooting",
+                    title: "Troubleshooting Methodology",
+                    minutes: 8,
+                    difficulty: 1,
+                    overview: "Systematic troubleshooting helps teams identify, diagnose, and resolve technical issues without jumping to unsupported conclusions. A structured model improves incident communication and reduces wasted effort.",
+                    workplaceUse: "When incidents occur, teams follow troubleshooting methodologies. Understanding the steps helps you set realistic timelines, ask better status questions, identify escalation points, and structure post-incident reviews.",
+                    deepDive: [
+                        "Identify the problem: Gather information, question users, identify symptoms, and determine scope.",
+                        "Establish a theory: Consider multiple causes, use models such as OSI for network issues, and check simple causes first.",
+                        "Test the theory: Confirm or eliminate possible causes through controlled testing.",
+                        "Establish and implement a plan: Document the fix, assess impact, plan the change window, and execute safely.",
+                        "Verify and document: Confirm the fix works, test related systems, record root cause, and capture lessons learned."
+                    ],
+                    keyTerms: ["Root Cause Analysis", "Escalation", "Change Management", "Incident", "Workaround", "Known Error", "Problem Management"],
+                    relatedTopicIds: ["incident-response", "operating-systems", "network-troubleshooting"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "What is the first step in the CompTIA troubleshooting methodology?",
+                            answers: ["Establish a theory", "Implement the solution", "Identify the problem", "Document findings"],
+                            correctIndex: 2,
+                            explanation: "Always start by identifying and understanding the problem before jumping to solutions."
+                        )
+                    ]
                 )
             ],
             capstone: "Create an asset and platform dependency map for a small business unit."
