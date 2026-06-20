@@ -8,7 +8,7 @@ This project is separate from the React/Vite web release in `outputs/cyberpath-r
 
 - Local-first SwiftUI app with no account requirement.
 - Dashboard with Continue Learning and a three-part focus plan.
-- 18-question cross-domain diagnostic with local readiness scores.
+- 20-question cross-domain diagnostic with local readiness scores.
 - Learning domain browser with topic detail, notes, bookmarks, completion, and quiz checks.
 - Branching scenario lab with generated decision brief.
 - Interactive visual studio with risk treatment and threat-model canvas.
