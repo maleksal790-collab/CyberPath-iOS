@@ -2,7 +2,7 @@
 
 Native SwiftUI iOS version of the CyberPath learning app.
 
-This project is separate from the React/Vite web release in `outputs/cyberpath-repaired`.
+This project is separate from the React/Vite web release in `outputs/cyberpath-repaired`. The existing Vercel web/PWA app remains the first launch surface and product/content reference. CyberPath iOS is the native SwiftUI version that will be aligned progressively through governed phases.
 
 ## Scope
 
@@ -50,6 +50,15 @@ This package includes a governed delivery structure:
 - App Store export template: `ExportOptions-AppStore.plist`
 - TestFlight/App Store deployment guide: `docs/governance/APP_STORE_CONNECT_DEPLOYMENT.md`
 - Governance docs: `docs/governance/`
+
+### Current Governance Planning Docs
+
+- `docs/governance/GOVERNANCE.md`
+- `docs/governance/DEVELOPMENT_PHASE_PLAN.md`
+- `docs/governance/WEB_IOS_PARITY_PLAN.md`
+- `docs/governance/CONTENT_MIGRATION_PLAN.md`
+- `docs/governance/VALIDATION_CHECKLIST.md`
+- `docs/governance/XCODE_PHASE_PLAN.md`
 
 The current package has no third-party runtime dependencies. Xcode build, simulator validation, signing, and App Store release gates must run on macOS.
 
