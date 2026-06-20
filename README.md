@@ -8,12 +8,24 @@ This project is separate from the React/Vite web release in `outputs/cyberpath-r
 
 - Local-first SwiftUI app with no account requirement.
 - Dashboard with Continue Learning and a three-part focus plan.
-- 20-question cross-domain diagnostic with local readiness scores.
+- 24-question cross-domain diagnostic with local readiness scores.
 - Learning domain browser with topic detail, notes, bookmarks, completion, and quiz checks.
+- Six learning domains: IT Foundations, Networking, Security Operations, GRC & Governance, Cloud Security, and Secure Delivery.
 - Branching scenario lab with generated decision brief.
-- Interactive visual studio with risk treatment and threat-model canvas.
+- Scenario coverage for credential compromise, cloud storage exposure, and mobile release governance.
+- Interactive visual studio with risk treatment, threat-model canvas, and cloud responsibility prompts.
 - Progress tab with journey snapshot, evidence report, export/import, and local reset.
 - App icon and accent color asset catalog included.
+
+## UX Direction
+
+CyberPath is positioned as a practical cybersecurity learning companion for project, IT, and security delivery professionals. The current experience emphasizes:
+
+- Fast orientation from the Home dashboard.
+- Clear learning domains with workplace-focused explanations.
+- Short lessons that connect technical concepts to delivery and governance decisions.
+- Scenario practice that rewards evidence-based decision making rather than memorization.
+- Local-first progress tracking, notes, bookmarks, and export/import.
 
 ## Requirements
 
