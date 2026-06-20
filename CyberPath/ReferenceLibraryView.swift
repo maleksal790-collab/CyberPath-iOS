@@ -118,6 +118,8 @@ struct ReferenceLibraryView: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .accessibilityLabel("Reference category filter")
+                .accessibilityValue(selectedCategory.rawValue)
 
                 Picker("Sort", selection: $sortMode) {
                     ForEach(ReferenceSortMode.allCases) { mode in
@@ -125,6 +127,8 @@ struct ReferenceLibraryView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .accessibilityLabel("Reference sort mode")
+                .accessibilityValue(sortMode.rawValue)
             }
 
             if !hasResults {
@@ -262,6 +266,8 @@ struct ReferenceLibraryView: View {
                     resetFilters()
                 }
                 .disabled(!hasActiveFilters)
+                .accessibilityLabel("Reset reference filters")
+                .accessibilityHint("Clears the search, category, and sort mode")
             }
         }
     }
@@ -356,6 +362,8 @@ private struct ReferenceOverviewTile: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)
         .background(.quaternary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }
 
