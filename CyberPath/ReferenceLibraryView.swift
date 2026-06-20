@@ -91,6 +91,10 @@ struct ReferenceLibraryView: View {
         }
     }
 
+    private var hasActiveFilters: Bool {
+        !trimmedQuery.isEmpty || selectedCategory != .all || sortMode != .defaultOrder
+    }
+
     var body: some View {
         List {
             Section {
@@ -248,6 +252,20 @@ struct ReferenceLibraryView: View {
         }
         .searchable(text: $query, prompt: "Search reference")
         .navigationTitle("Reference")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Reset") {
+                    resetFilters()
+                }
+                .disabled(!hasActiveFilters)
+            }
+        }
+    }
+
+    private func resetFilters() {
+        query = ""
+        selectedCategory = .all
+        sortMode = .defaultOrder
     }
 
     private func matchesCategory(_ category: ReferenceCategory) -> Bool {
