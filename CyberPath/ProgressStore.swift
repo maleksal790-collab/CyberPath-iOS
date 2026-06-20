@@ -1,6 +1,11 @@
 import Foundation
 import Observation
 
+enum ProgressImportResult {
+    case success(String)
+    case failure(String)
+}
+
 @Observable final class ProgressStore {
     private let storageKey = "CyberPathProgress"
     var snapshot: ProgressSnapshot = ProgressSnapshot()
@@ -204,7 +209,7 @@ import Observation
         return json
     }
 
-    func importJSON(_ json: String) -> Result<String, String> {
+    func importJSON(_ json: String) -> ProgressImportResult {
         guard let data = json.data(using: .utf8) else {
             return .failure("Import text is not valid UTF-8.")
         }
