@@ -3,6 +3,7 @@ import SwiftUI
 struct ReferenceLibraryView: View {
     @State private var query = ""
     @State private var selectedCategory = ReferenceCategory.all
+    @State private var sortMode = ReferenceSortMode.defaultOrder
 
     private enum ReferenceCategory: String, CaseIterable, Identifiable {
         case all = "All"
@@ -15,38 +16,50 @@ struct ReferenceLibraryView: View {
         var id: String { rawValue }
     }
 
+    private enum ReferenceSortMode: String, CaseIterable, Identifiable {
+        case defaultOrder = "Default"
+        case sorted = "Sorted"
+
+        var id: String { rawValue }
+    }
+
     private var trimmedQuery: String {
         query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     private var glossaryTerms: [GlossaryTerm] {
-        GlossaryData.terms.filter { term in
+        let filtered = GlossaryData.terms.filter { term in
             matchesCategory(.glossary) && matchesQuery([term.term, term.definition, term.relatedDomainIds.joined(separator: " ")])
         }
+        return sortMode == .sorted ? filtered.sorted { $0.term.localizedCaseInsensitiveCompare($1.term) == .orderedAscending } : filtered
     }
 
     private var portItems: [PortCheatSheetItem] {
-        PortReferenceData.items.filter { item in
+        let filtered = PortReferenceData.items.filter { item in
             matchesCategory(.ports) && matchesQuery(["Port \(item.port)", item.transportProtocol, item.description])
         }
+        return sortMode == .sorted ? filtered.sorted { $0.port < $1.port } : filtered
     }
 
     private var frameworks: [FrameworkComparison] {
-        FrameworkReferenceData.frameworks.filter { framework in
+        let filtered = FrameworkReferenceData.frameworks.filter { framework in
             matchesCategory(.frameworks) && matchesQuery([framework.framework, framework.scope, framework.approach, framework.structure, framework.bestFor])
         }
+        return sortMode == .sorted ? filtered.sorted { $0.framework.localizedCaseInsensitiveCompare($1.framework) == .orderedAscending } : filtered
     }
 
     private var metrics: [SecurityMetric] {
-        MetricReferenceData.metrics.filter { metric in
+        let filtered = MetricReferenceData.metrics.filter { metric in
             matchesCategory(.metrics) && matchesQuery([metric.metric, metric.fullName, metric.description, metric.target, metric.category])
         }
+        return sortMode == .sorted ? filtered.sorted { $0.metric.localizedCaseInsensitiveCompare($1.metric) == .orderedAscending } : filtered
     }
 
     private var toolCategories: [ToolLandscapeCategory] {
-        ToolReferenceData.categories.filter { category in
+        let filtered = ToolReferenceData.categories.filter { category in
             matchesCategory(.tools) && matchesQuery([category.category, category.tools.joined(separator: " ")])
         }
+        return sortMode == .sorted ? filtered.sorted { $0.category.localizedCaseInsensitiveCompare($1.category) == .orderedAscending } : filtered
     }
 
     private var hasResults: Bool {
@@ -85,6 +98,7 @@ struct ReferenceLibraryView: View {
                     visibleCount: visibleReferenceCount,
                     totalCount: totalReferenceCount,
                     categoryLabel: selectedCategory.rawValue,
+                    sortLabel: sortMode.rawValue,
                     filterSummary: filterSummary
                 )
             }
@@ -96,6 +110,13 @@ struct ReferenceLibraryView: View {
                     }
                 }
                 .pickerStyle(.menu)
+
+                Picker("Sort", selection: $sortMode) {
+                    ForEach(ReferenceSortMode.allCases) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
             }
 
             if !hasResults {
@@ -243,6 +264,7 @@ private struct ReferenceOverviewHeader: View {
     let visibleCount: Int
     let totalCount: Int
     let categoryLabel: String
+    let sortLabel: String
     let filterSummary: String
 
     var body: some View {
@@ -259,7 +281,7 @@ private struct ReferenceOverviewHeader: View {
                 ReferenceOverviewTile(value: "\(visibleCount)", label: "Visible")
                 ReferenceOverviewTile(value: "\(totalCount)", label: "Total")
                 ReferenceOverviewTile(value: categoryLabel, label: "Category")
-                ReferenceOverviewTile(value: "5", label: "Groups")
+                ReferenceOverviewTile(value: sortLabel, label: "Sort")
             }
         }
         .padding(.vertical, 4)
