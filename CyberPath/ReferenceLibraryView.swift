@@ -361,6 +361,11 @@ private struct ReferenceGuidanceCard: View {
                 ReferenceGuidanceRow(symbol: "arrow.up.arrow.down", text: "Switch sort mode when scanning a long list.")
                 ReferenceGuidanceRow(symbol: "chevron.right.circle", text: "Expand rows to inspect details without leaving the screen.")
             }
+
+            Text("Reference entries are curated for quick lookup and will keep expanding as the app content grows.")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+                .accessibilityLabel("Reference entries are curated for quick lookup and will keep expanding as the app content grows.")
         }
         .padding(.vertical, 4)
     }
