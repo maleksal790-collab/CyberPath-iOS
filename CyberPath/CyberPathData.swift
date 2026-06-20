@@ -15,30 +15,62 @@ enum CyberPathData {
                     title: "Hardware Components",
                     minutes: 12,
                     difficulty: 1,
-                    overview: "Understand CPU, memory, storage, firmware, and network interfaces as operational and security dependencies.",
-                    workplaceUse: "Useful for hardware refresh planning, incident triage, capacity decisions, and infrastructure risk review.",
-                    keyTerms: ["CPU", "RAM", "SSD", "NIC", "Firmware"],
-                    quiz: QuizQuestion(
-                        question: "Which component is most relevant to memory forensics?",
-                        answers: ["CPU", "RAM", "Power supply", "Display"],
-                        correctIndex: 1,
-                        explanation: "RAM can contain active process data, malware artifacts, and volatile evidence."
-                    )
+                    overview: "Understanding the physical components that make up computing systems: CPU, RAM, storage devices, motherboards, power supplies, and peripheral devices. These components work together to process, store, and transmit data.",
+                    workplaceUse: "When your infrastructure team discusses hardware refresh cycles, capacity planning, or performance bottlenecks, understanding these components helps you assess timelines, budget requirements, and risk. A failing hard drive or insufficient RAM can be a security vulnerability if it causes system instability.",
+                    deepDive: [
+                        "CPU: The brain of the computer, measured in cores, clock speed, and architecture. Security relevance includes hardware-level vulnerabilities such as Spectre and Meltdown.",
+                        "RAM: Volatile memory for active processes. Security relevance includes memory forensics and attacks that target active memory.",
+                        "Storage: HDDs and SSDs support data at rest, secure destruction, encryption, and disk forensics.",
+                        "Motherboard and firmware: BIOS or UEFI firmware can become a low-level attack surface.",
+                        "NIC: Enables network connectivity and introduces risks such as MAC spoofing and packet capture."
+                    ],
+                    keyTerms: ["CPU", "RAM", "SSD", "HDD", "NIC", "BIOS", "UEFI", "Firmware", "Motherboard"],
+                    relatedTopicIds: ["operating-systems", "virtualization", "server-hardening"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "Which component is most relevant to memory forensics investigations?",
+                            answers: ["CPU", "RAM", "Hard Drive", "Power Supply"],
+                            correctIndex: 1,
+                            explanation: "RAM holds active process data and can contain evidence of malware, encryption keys, and user activity that disappears when power is lost."
+                        ),
+                        QuizQuestion(
+                            question: "What hardware-level vulnerability affected Intel CPUs and could leak sensitive data?",
+                            answers: ["Heartbleed", "Spectre", "SQL Injection", "Cross-Site Scripting"],
+                            correctIndex: 1,
+                            explanation: "Spectre and Meltdown are CPU speculative-execution vulnerabilities that can leak sensitive data from memory."
+                        )
+                    ]
                 ),
                 Topic(
                     id: "operating-systems",
                     title: "Operating Systems",
                     minutes: 15,
                     difficulty: 1,
-                    overview: "Compare Windows, Linux, and macOS security models, services, filesystems, and administration patterns.",
-                    workplaceUse: "Helps project managers understand platform dependencies, patch plans, endpoint hardening, and support ownership.",
-                    keyTerms: ["Kernel", "Registry", "Shell", "Permissions"],
-                    quiz: QuizQuestion(
-                        question: "Which platform is most associated with Active Directory in enterprise environments?",
-                        answers: ["Linux", "Windows", "macOS", "FreeBSD"],
-                        correctIndex: 1,
-                        explanation: "Windows environments commonly use Active Directory for centralized identity and policy."
-                    )
+                    overview: "Operating systems manage hardware resources and provide services to applications. The three major OS families in enterprise environments are Windows, Linux, and macOS, each with distinct security models, administration tools, and use cases.",
+                    workplaceUse: "Your teams will work across multiple OS platforms. Windows dominates enterprise desktops and Active Directory environments. Linux runs most servers, cloud infrastructure, and security tools. Understanding OS differences helps you plan cross-platform projects, estimate training needs, and assess compatibility risks.",
+                    deepDive: [
+                        "Windows: Dominant in enterprise desktop environments, commonly paired with Active Directory, PowerShell, Defender, BitLocker, Registry, and Event Logs.",
+                        "Linux: Common across servers, cloud platforms, and security tooling. Administration often uses shells, file permissions, package managers, and service daemons.",
+                        "macOS: Unix-based and common in creative and development teams, with controls such as Gatekeeper, FileVault, and XProtect.",
+                        "Kernel: The OS core that manages hardware and privileges. Kernel vulnerabilities can cause critical privilege escalation.",
+                        "File systems: NTFS, ext4, and APFS each have different permission models and forensic artifacts."
+                    ],
+                    keyTerms: ["Kernel", "File System", "Process", "Registry", "Permissions", "Shell", "GUI", "CLI", "Daemon", "Service"],
+                    relatedTopicIds: ["hardware-basics", "linux-administration", "active-directory"],
+                    quizzes: [
+                        QuizQuestion(
+                            question: "Which operating system is most commonly used for enterprise identity management via Active Directory?",
+                            answers: ["Linux", "macOS", "Windows", "FreeBSD"],
+                            correctIndex: 2,
+                            explanation: "Windows Server with Active Directory is the dominant enterprise identity and access management platform."
+                        ),
+                        QuizQuestion(
+                            question: "What Linux distribution is specifically designed for penetration testing and security research?",
+                            answers: ["Ubuntu", "CentOS", "Kali Linux", "Red Hat"],
+                            correctIndex: 2,
+                            explanation: "Kali Linux comes pre-loaded with many security and penetration testing tools."
+                        )
+                    ]
                 )
             ],
             capstone: "Create an asset and platform dependency map for a small business unit."
