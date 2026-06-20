@@ -21,8 +21,68 @@ struct Topic: Identifiable, Hashable {
     let difficulty: Int
     let overview: String
     let workplaceUse: String
+    let deepDive: [String]
     let keyTerms: [String]
+    let relatedTopicIds: [String]
     let quiz: QuizQuestion
+    let quizzes: [QuizQuestion]
+
+    init(
+        id: String,
+        title: String,
+        minutes: Int,
+        difficulty: Int,
+        overview: String,
+        workplaceUse: String,
+        deepDive: [String] = [],
+        keyTerms: [String],
+        relatedTopicIds: [String] = [],
+        quiz: QuizQuestion
+    ) {
+        self.id = id
+        self.title = title
+        self.minutes = minutes
+        self.difficulty = difficulty
+        self.overview = overview
+        self.workplaceUse = workplaceUse
+        self.deepDive = deepDive
+        self.keyTerms = keyTerms
+        self.relatedTopicIds = relatedTopicIds
+        self.quiz = quiz
+        self.quizzes = [quiz]
+    }
+
+    init(
+        id: String,
+        title: String,
+        minutes: Int,
+        difficulty: Int,
+        overview: String,
+        workplaceUse: String,
+        deepDive: [String] = [],
+        keyTerms: [String],
+        relatedTopicIds: [String] = [],
+        quizzes: [QuizQuestion]
+    ) {
+        let primaryQuiz = quizzes.first ?? QuizQuestion(
+            question: "No quiz is available for this topic yet.",
+            answers: ["Review the topic content first."],
+            correctIndex: 0,
+            explanation: "This placeholder protects the model from empty quiz arrays during staged content migration."
+        )
+
+        self.id = id
+        self.title = title
+        self.minutes = minutes
+        self.difficulty = difficulty
+        self.overview = overview
+        self.workplaceUse = workplaceUse
+        self.deepDive = deepDive
+        self.keyTerms = keyTerms
+        self.relatedTopicIds = relatedTopicIds
+        self.quiz = primaryQuiz
+        self.quizzes = quizzes.isEmpty ? [primaryQuiz] : quizzes
+    }
 }
 
 struct QuizQuestion: Hashable {
@@ -32,7 +92,77 @@ struct QuizQuestion: Hashable {
     let explanation: String
 }
 
-struct Scenario: Identifiable {
+struct GlossaryTerm: Identifiable, Hashable {
+    let id: String
+    let term: String
+    let definition: String
+    let relatedDomainIds: [String]
+
+    init(term: String, definition: String, relatedDomainIds: [String] = []) {
+        self.id = term
+        self.term = term
+        self.definition = definition
+        self.relatedDomainIds = relatedDomainIds
+    }
+}
+
+struct PortCheatSheetItem: Identifiable, Hashable {
+    var id: String { "\(port)-\(transportProtocol)" }
+    let port: Int
+    let transportProtocol: String
+    let usesTCP: Bool
+    let description: String
+}
+
+struct FrameworkComparison: Identifiable, Hashable {
+    let id: String
+    let framework: String
+    let scope: String
+    let approach: String
+    let structure: String
+    let bestFor: String
+
+    init(framework: String, scope: String, approach: String, structure: String, bestFor: String) {
+        self.id = framework
+        self.framework = framework
+        self.scope = scope
+        self.approach = approach
+        self.structure = structure
+        self.bestFor = bestFor
+    }
+}
+
+struct SecurityMetric: Identifiable, Hashable {
+    let id: String
+    let metric: String
+    let fullName: String
+    let description: String
+    let target: String
+    let category: String
+
+    init(metric: String, fullName: String, description: String, target: String, category: String) {
+        self.id = metric
+        self.metric = metric
+        self.fullName = fullName
+        self.description = description
+        self.target = target
+        self.category = category
+    }
+}
+
+struct ToolLandscapeCategory: Identifiable, Hashable {
+    let id: String
+    let category: String
+    let tools: [String]
+
+    init(category: String, tools: [String]) {
+        self.id = category
+        self.category = category
+        self.tools = tools
+    }
+}
+
+struct Scenario: Identifiable, Hashable {
     let id: String
     let title: String
     let summary: String

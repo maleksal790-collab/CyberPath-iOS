@@ -1,8 +1,9 @@
 import Foundation
-import Combine
+import Observation
 
-enum ProgressError: Error {
-    case importFailed(String)
+enum ProgressImportResult {
+    case success(String)
+    case failure(String)
 }
 
 @Observable final class ProgressStore {
@@ -208,21 +209,21 @@ enum ProgressError: Error {
         return json
     }
 
-    func importJSON(_ json: String) -> Result<String, ProgressError> {
+    func importJSON(_ json: String) -> ProgressImportResult {
         guard let data = json.data(using: .utf8) else {
-            return .failure(.importFailed("Import text is not valid UTF-8."))
+            return .failure("Import text is not valid UTF-8.")
         }
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
         do {
-            let import_obj = try decoder.decode(ProgressExport.self, from: data)
-            snapshot = import_obj.snapshot
+            let importedExport = try decoder.decode(ProgressExport.self, from: data)
+            snapshot = importedExport.snapshot
             save()
             return .success("Imported \(snapshot.completedTopicIds.count) completed topics and \(snapshot.scenarioAttempts.count) scenario attempts.")
         } catch {
-            return .failure(.importFailed("Failed to parse progress JSON: \(error.localizedDescription)"))
+            return .failure("Failed to parse progress JSON: \(error.localizedDescription)")
         }
     }
 
