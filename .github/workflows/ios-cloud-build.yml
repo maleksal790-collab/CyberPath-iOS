@@ -1,0 +1,40 @@
+name: iOS Cloud Build
+
+on:
+  pull_request:
+    paths:
+      - 'CyberPath.xcodeproj/**'
+      - '.github/workflows/ios-cloud-build.yml'
+      - 'scripts/**'
+  push:
+    branches:
+      - 'release/*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 15
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app || true
+
+      - name: Build & Unit‑Test
+        run: |
+          xcodebuild -scheme CyberPath \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            clean test | xcpretty
+
+      - name: Archive (release branches only)
+        if: startsWith(github.ref_name, 'release/')
+        run: scripts/release/archive_release.sh
+
+      - name: Export & Upload to TestFlight
+        if: startsWith(github.ref_name, 'release/')
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APPLE_DEV_CERT: ${{ secrets.APPLE_DEV_CERT }}
+          APPLE_DEV_CERT_PASSWORD: ${{ secrets.APPLE_DEV_CERT_PASSWORD }}
+        run: scripts/release/export_appstore.sh
