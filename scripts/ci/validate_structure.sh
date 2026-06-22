@@ -25,6 +25,9 @@ required_files=(
   "docs/governance/APP_STORE_CONNECT_DEPLOYMENT.md"
   "docs/governance/PRIVACY_NUTRITION.md"
   "docs/governance/RELEASE_NOTES.md"
+  ".github/workflows/ios-governed-delivery.yml"
+  ".github/CODEOWNERS"
+  ".github/pull_request_template"
   "ExportOptions-AppStore.plist"
 )
 
@@ -41,17 +44,17 @@ if [[ "$icon_count" != "10" ]]; then
   exit 1
 fi
 
-if grep -RInE --exclude='validate_structure.sh' --exclude='validate_structure.ps1' 'TODO|FIXME' CyberPath scripts docs .github README.md IOS_HANDOFF.md COMPLETION_STATUS.md; then
+if rg --hidden --line-number --with-filename --glob '!scripts/ci/validate_structure.sh' --glob '!scripts/ci/validate_structure.ps1' 'TODO|FIXME' CyberPath scripts docs .github README.md IOS_HANDOFF.md COMPLETION_STATUS.md; then
   echo "Blocked unfinished marker found." >&2
   exit 1
 fi
 
-if grep -RInE 'fatalError|try!|as!' CyberPath; then
+if rg --line-number --with-filename 'fatalError|try!|as!' CyberPath; then
   echo "Blocked unsafe Swift pattern found." >&2
   exit 1
 fi
 
-if grep -RInE --exclude='validate_structure.sh' --exclude='validate_structure.ps1' 'BEGIN CERTIFICATE|BEGIN .*PRIVATE KEY' . --exclude-dir=.git; then
+if rg --hidden --line-number --with-filename --glob '!.git/**' --glob '!scripts/ci/validate_structure.sh' --glob '!scripts/ci/validate_structure.ps1' 'BEGIN CERTIFICATE|BEGIN .*PRIVATE KEY' .; then
   echo "Potential signing secret committed to source." >&2
   exit 1
 fi
