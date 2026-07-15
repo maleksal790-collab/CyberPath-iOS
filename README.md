@@ -65,3 +65,5 @@ The current package has no third-party runtime dependencies. Xcode build, simula
 ## Signing
 
 The bundle identifier is `com.cyberpath.ios`. For device installation or App Store distribution, set your Apple Developer Team in Xcode under the `CyberPath` target signing settings.
+ 
+"✅ SSH test commit - successfully pushed from Windows on 2026-07-15" 
